@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warung Bakso Pakde Tono</title>
+    <!-- Tailwind CSS Standard CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .nav-btn {
+            transition: all 0.2s ease;
+        }
+        .nav-btn.active {
+            background-color: #f59e0b; /* Warna Kuning Amber */
+            color: #1c1917; /* Warna Teks Cokelat Gelap */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-amber-50 text-gray-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- HEADER & NAVBAR -->
+    <header class="bg-red-700 text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-2.5 flex justify-between items-center">
+            <!-- Logo Warung Pakde Tono (logo bpt.jpeg) -->
+            <button onclick="bukaTab('beranda')" class="flex items-center space-x-3 text-left focus:outline-none">
+                <img src="logo bpt.jpeg" alt="Logo Bakso Pakde Tono" class="h-10 w-10 sm:h-12 sm:w-12 rounded-full object-cover border-2 border-amber-300 shadow-sm" onerror="this.onerror=null; this.src='https://placehold.co/100x100/dc2626/ffffff?text=BPT';">
+                <div>
+                    <span class="font-bold text-lg sm:text-xl block leading-tight tracking-wide">Bakso Pakde Tono</span>
+                    <span class="text-[11px] text-amber-200 block">Daging Sapi Asli & Kuah Kaldu Gurih</span>
+                </div>
+            </button>
+
+            <!-- Menu Desktop -->
+            <div class="hidden md:flex space-x-1 text-xs lg:text-sm font-medium">
+                <button id="nav-beranda" onclick="bukaTab('beranda')" class="nav-btn px-3 py-1.5 rounded hover:bg-red-600 active">Beranda</button>
+                <button id="nav-tentang" onclick="bukaTab('tentang')" class="nav-btn px-3 py-1.5 rounded hover:bg-red-600">Sejarah Kami</button>
+                <button id="nav-menu" onclick="bukaTab('menu')" class="nav-btn px-3 py-1.5 rounded hover:bg-red-600">Menu & Harga</button>
+                <button id="nav-booking" onclick="bukaTab('booking')" class="nav-btn px-3 py-1.5 rounded hover:bg-red-600">Booking Tempat</button>
+                <button id="nav-testimoni" onclick="bukaTab('testimoni')" class="nav-btn px-3 py-1.5 rounded hover:bg-red-600">Testimoni</button>
+                <button id="nav-kontak" onclick="bukaTab('kontak')" class="nav-btn px-3 py-1.5 rounded hover:bg-red-600">Kontak & Maps</button>
+                <button id="nav-admin" onclick="bukaTab('admin')" class="nav-btn px-3 py-1.5 rounded bg-red-900 hover:bg-red-800 text-amber-300 font-bold">Laporan Admin</button>
+            </div>
+
+            <!-- Tombol Keranjang & Toggle HP -->
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleKeranjang()" class="bg-amber-500 hover:bg-amber-400 text-stone-900 px-3 py-1.5 rounded-lg font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <span>Pesanan</span>
+                    <span id="cart-count" class="bg-red-700 text-white text-[10px] px-1.5 py-0.5 rounded-full hidden">0</span>
+                </button>
+
+                <button onclick="toggleMobileNav()" class="md:hidden text-2xl px-2 text-amber-200 focus:outline-none">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menu Navigasi Mobile -->
+        <div id="mobile-nav" class="hidden md:hidden bg-red-800 px-4 py-3 space-y-1 text-sm border-t border-red-600">
+            <button onclick="bukaTab('beranda')" class="block w-full text-left py-2 px-2 hover:bg-red-700 rounded">🏠 Beranda</button>
+            <button onclick="bukaTab('tentang')" class="block w-full text-left py-2 px-2 hover:bg-red-700 rounded">📖 Sejarah Kami</button>
+            <button onclick="bukaTab('menu')" class="block w-full text-left py-2 px-2 hover:bg-red-700 rounded">🍲 Menu & Harga (Pesan Pickup)</button>
+            <button onclick="bukaTab('booking')" class="block w-full text-left py-2 px-2 hover:bg-red-700 rounded">🪑 Booking Tempat (Rombongan)</button>
+            <button onclick="bukaTab('testimoni')" class="block w-full text-left py-2 px-2 hover:bg-red-700 rounded">💬 Testimoni & Komen</button>
+            <button onclick="bukaTab('kontak')" class="block w-full text-left py-2 px-2 hover:bg-red-700 rounded">📍 Kontak & Maps</button>
+            <button onclick="bukaTab('admin')" class="block w-full text-left py-2 px-2 bg-red-900 text-amber-300 font-bold rounded">📊 Laporan Admin</button>
+        </div>
+    </header>
+
+    <!-- AREA UTAMA KONTEN -->
+    <main class="flex-1 max-w-4xl w-full mx-auto p-4 sm:p-6">
+
+        <!-- TAB 1: BERANDA -->
+        <section id="tab-beranda" class="tab-content">
+            <div class="bg-white rounded-xl p-6 sm:p-8 border border-amber-200 shadow-sm text-center space-y-5">
+                <img src="logo bpt.jpeg" alt="Bakso Pakde Tono" class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover mx-auto border-4 border-amber-400 shadow" onerror="this.onerror=null; this.src='https://placehold.co/120x120/dc2626/ffffff?text=BPT';">
+                <div>
+                    <h1 class="text-2xl sm:text-3xl font-bold text-stone-800">Warung Bakso Pakde Tono</h1>
+                    <p class="text-gray-600 text-sm mt-2 max-w-xl mx-auto leading-relaxed">
+                        Selamat datang di website resmi Bakso Pakde Tono! Kami menyajikan bakso daging sapi racikan resep khas yang gurih, segar, dan lezat!
+                    </p>
+                </div>
+
+                <div class="pt-2 flex flex-col sm:flex-row justify-center gap-3">
+                    <button onclick="bukaTab('menu')" class="bg-red-700 hover:bg-red-600 text-white font-bold px-5 py-2.5 rounded-lg text-sm shadow">
+                        <i class="fa-solid fa-utensils mr-1.5"></i> Pesan Untuk Diambil (Pickup)
+                    </button>
+                    <button onclick="bukaTab('booking')" class="bg-amber-500 hover:bg-amber-400 text-stone-900 font-bold px-5 py-2.5 rounded-lg text-sm shadow">
+                        <i class="fa-solid fa-chair mr-1.5"></i> Booking Tempat
+                    </button>
+                </div>
+
+                <!-- Informasi Ringkas Warung -->
+                <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 text-xs text-stone-700 text-left grid grid-cols-1 sm:grid-cols-2 gap-2 mt-6">
+                    <div><strong>🕒 Jam Operasional:</strong> Buka Setiap Hari (10.00 - 21.00 WIB)</div>
+                    <div><strong>🛍️ Sistem Pesanan:</strong> Ambil Sendiri / Drive-Thru Warung</div>
+                    <div><strong>📍 Lokasi:</strong> Bali Mester, Jatinegara, Jakarta Timur</div>
+                    <div><strong>💳 Pembayaran:</strong> Cash di Warung atau QRIS Online</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: SEJARAH KAMI -->
+        <section id="tab-tentang" class="tab-content hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-xl border border-amber-200 shadow-sm space-y-4">
+                <h2 class="text-2xl font-bold text-stone-800 border-b pb-3 border-amber-200 flex items-center gap-2">
+                    <span>📖</span> Sejarah Kami
+                </h2>
+                
+                <div class="text-gray-700 leading-relaxed space-y-3 text-sm sm:text-base pt-2">
+                    <p>
+                        Warung Bakso Pakde Tono didirikan dari usaha kuliner keluarga yang mengutamakan kualitas daging sapi asli dan cita rasa kuah kaldu segar tanpa pengawet.
+                    </p>
+                    <p>
+                        Berawal dari resep sederhana khas Jawa Tengah, kami selalu berkomitmen untuk menyajikan porsi bakso yang kenyal, lezat, dan ramah di kantong masyarakat sekitar Jatinegara.
+                    </p>
+                </div>
+
+                <div class="mt-6 bg-amber-50 p-3 rounded border border-amber-200 text-xs text-amber-800 italic">
+                    💡 <strong>Catatan Pemilik:</strong> Teks "Sejarah Kami" di atas bisa Anda sesuaikan langsung dari dalam file kode ini.
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: MENU & HARGA -->
+        <section id="tab-menu" class="tab-content hidden">
+            <div class="space-y-8">
+                <div class="text-center bg-white p-4 rounded-xl border border-amber-200 shadow-sm">
+                    <h2 class="text-2xl font-bold text-stone-800">Menu & Harga Pesanan</h2>
+                    <p class="text-xs text-gray-600 mt-1">Pilih menu, tentukan jam pengambilan, dan ambil pesanan Anda langsung di warung!</p>
+                </div>
+
+                <!-- KATEGORI BAKSO -->
+                <div>
+                    <h3 class="text-lg font-bold text-red-800 border-l-4 border-red-700 pl-3 mb-4 flex items-center gap-2">
+                        <span>🍲</span> Menu Bakso Daging Sapi
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- Bakso Biasa -->
+                        <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm flex flex-col">
+                            <img src="biasa.jpeg" alt="Bakso Biasa" class="h-40 w-full object-cover bg-gray-100" onerror="this.onerror=null; this.src='https://placehold.co/400x300/e2e8f0/1e293b?text=biasa.jpeg';">
+                            <div class="p-3.5 flex-1 flex flex-col justify-between space-y-2">
+                                <div>
+                                    <h4 class="font-bold text-base text-stone-800">Bakso Biasa</h4>
+                                    <p class="text-gray-500 text-xs mt-0.5">Bakso halus daging sapi, mie, bihun, & kuah gurih.</p>
+                                </div>
+                                <div class="flex justify-between items-center pt-2 border-t">
+                                    <span class="text-red-700 font-bold text-sm">Rp 15.000</span>
+                                    <button onclick="tambahItem('Bakso Biasa', 15000)" class="bg-amber-500 hover:bg-amber-400 text-stone-900 px-3 py-1 rounded text-xs font-bold shadow-sm">
+                                        + Pesan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bakso Urat -->
+                        <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm flex flex-col">
+                            <img src="urat.jpeg" alt="Bakso Urat" class="h-40 w-full object-cover bg-gray-100" onerror="this.onerror=null; this.src='https://placehold.co/400x300/e2e8f0/1e293b?text=urat.jpeg';">
+                            <div class="p-3.5 flex-1 flex flex-col justify-between space-y-2">
+                                <div>
+                                    <h4 class="font-bold text-base text-stone-800">Bakso Urat</h4>
+                                    <p class="text-gray-500 text-xs mt-0.5">Bakso urat sapi dengan tekstur berdaging khas Pakde Tono.</p>
+                                </div>
+                                <div class="flex justify-between items-center pt-2 border-t">
+                                    <span class="text-red-700 font-bold text-sm">Rp 18.000</span>
+                                    <button onclick="tambahItem('Bakso Urat', 18000)" class="bg-amber-500 hover:bg-amber-400 text-stone-900 px-3 py-1 rounded text-xs font-bold shadow-sm">
+                                        + Pesan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bakso Telur -->
+                        <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm flex flex-col">
+                            <img src="telur.jpeg" alt="Bakso Telur" class="h-40 w-full object-cover bg-gray-100" onerror="this.onerror=null; this.src='https://placehold.co/400x300/e2e8f0/1e293b?text=telur.jpeg';">
+                            <div class="p-3.5 flex-1 flex flex-col justify-between space-y-2">
+                                <div>
+                                    <h4 class="font-bold text-base text-stone-800">Bakso Telur</h4>
+                                    <p class="text-gray-500 text-xs mt-0.5">Bakso jumbo berisi telur ayam utuh di dalamnya.</p>
+                                </div>
+                                <div class="flex justify-between items-center pt-2 border-t">
+                                    <span class="text-red-700 font-bold text-sm">Rp 20.000</span>
+                                    <button onclick="tambahItem('Bakso Telur', 20000)" class="bg-amber-500 hover:bg-amber-400 text-stone-900 px-3 py-1 rounded text-xs font-bold shadow-sm">
+                                        + Pesan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KATEGORI MINUMAN -->
+                <div>
+                    <h3 class="text-lg font-bold text-amber-800 border-l-4 border-amber-600 pl-3 mb-4 flex items-center gap-2">
+                        <span>🥤</span> Menu Minuman Segar
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- Air Putih -->
+                        <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm flex flex-col">
+                            <img src="bening.jpeg" alt="Air Putih" class="h-40 w-full object-cover bg-gray-100" onerror="this.onerror=null; this.src='https://placehold.co/400x300/e2e8f0/1e293b?text=putih.jpeg';">
+                            <div class="p-3.5 flex-1 flex flex-col justify-between space-y-2">
+                                <div>
+                                    <h4 class="font-bold text-base text-stone-800">Air Putih</h4>
+                                    <p class="text-gray-500 text-xs mt-0.5">Air mineral kemasan segar.</p>
+                                </div>
+                                <div class="flex justify-between items-center pt-2 border-t">
+                                    <span class="text-red-700 font-bold text-sm">Rp 3.000</span>
+                                    <button onclick="tambahItem('Air Putih', 3000)" class="bg-amber-500 hover:bg-amber-400 text-stone-900 px-3 py-1 rounded text-xs font-bold shadow-sm">
+                                        + Pesan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Teh Anget -->
+                        <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm flex flex-col">
+                            <img src="anget.jpeg" alt="Teh Anget" class="h-40 w-full object-cover bg-gray-100" onerror="this.onerror=null; this.src='https://placehold.co/400x300/e2e8f0/1e293b?text=angen.jpeg';">
+                            <div class="p-3.5 flex-1 flex flex-col justify-between space-y-2">
+                                <div>
+                                    <h4 class="font-bold text-base text-stone-800">Teh Anget</h4>
+                                    <p class="text-gray-500 text-xs mt-0.5">Teh manis hangat racikan mantap.</p>
+                                </div>
+                                <div class="flex justify-between items-center pt-2 border-t">
+                                    <span class="text-red-700 font-bold text-sm">Rp 4.000</span>
+                                    <button onclick="tambahItem('Teh Anget', 4000)" class="bg-amber-500 hover:bg-amber-400 text-stone-900 px-3 py-1 rounded text-xs font-bold shadow-sm">
+                                        + Pesan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Es Teh -->
+                        <div class="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm flex flex-col">
+                            <img src="es.jpeg" alt="Es Teh" class="h-40 w-full object-cover bg-gray-100" onerror="this.onerror=null; this.src='https://placehold.co/400x300/e2e8f0/1e293b?text=es.jpeg';">
+                            <div class="p-3.5 flex-1 flex flex-col justify-between space-y-2">
+                                <div>
+                                    <h4 class="font-bold text-base text-stone-800">Es Teh</h4>
+                                    <p class="text-gray-500 text-xs mt-0.5">Es teh manis segar pelepas dahaga.</p>
+                                </div>
+                                <div class="flex justify-between items-center pt-2 border-t">
+                                    <span class="text-red-700 font-bold text-sm">Rp 5.000</span>
+                                    <button onclick="tambahItem('Es Teh', 5000)" class="bg-amber-500 hover:bg-amber-400 text-stone-900 px-3 py-1 rounded text-xs font-bold shadow-sm">
+                                        + Pesan
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: BOOKING TEMPAT (KHUSUS ROMBONGAN) -->
+        <section id="tab-booking" class="tab-content hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-xl border border-amber-200 shadow-sm space-y-5">
+                <div class="border-b pb-3 border-amber-200 text-center">
+                    <h2 class="text-2xl font-bold text-stone-800">🪑 Booking Tempat / Lesehan</h2>
+                    <p class="text-xs text-amber-800 font-medium mt-1 bg-amber-50 py-1.5 px-3 rounded inline-block border border-amber-200">
+                        Gak Ada Nomor Meja Khusus
+                    </p>
+                </div>
+
+                <p class="text-xs sm:text-sm text-gray-600 leading-relaxed text-center max-w-lg mx-auto">
+                    Form ini diperuntukkan bagi yang ingin memesan tempat/meja makan untuk rombongan keluarga atau acara kumpul agar tempat dipersiapkan lebih awal oleh Pakde Tono.
+                </p>
+
+                <form onsubmit="kirimBookingWA(event)" class="space-y-3 text-xs sm:text-sm max-w-md mx-auto pt-2">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Nama Pemesan *</label>
+                        <input type="text" id="booking-nama" required placeholder="Contoh: Bpk. Ahmad" class="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Nomor WA *</label>
+                        <input type="text" id="booking-hp" required placeholder="Contoh: 08123456789" class="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Tanggal Rencana *</label>
+                            <input type="date" id="booking-tanggal" required class="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Jam Kedatangan *</label>
+                            <input type="time" id="booking-jam" required class="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Jumlah Orang (Estimasi) *</label>
+                        <input type="number" id="booking-jumlah" min="1" required placeholder="Misal: 5 Orang" class="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Catatan Tambahan (Opsional)</label>
+                        <textarea id="booking-catatan" rows="2" placeholder="Misal: Sekalian siapkan 5 porsi bakso urat" class="w-full p-2.5 border border-gray-300 rounded focus:outline-none focus:border-red-600"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg text-sm shadow">
+                        <i class="fa-brands fa-whatsapp mr-1.5 text-base"></i> Kirim Booking Tempat via WhatsApp
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- TAB 5: TESTIMONI & KOMENTAR PELANGGAN -->
+        <section id="tab-testimoni" class="tab-content hidden">
+            <div class="space-y-6">
+                <!-- Form Tulis Komentar -->
+                <div class="bg-white p-6 rounded-xl border border-amber-200 shadow-sm space-y-4">
+                    <h2 class="text-xl font-bold text-stone-800 border-b pb-2 border-amber-200 flex items-center gap-2">
+                        <span>✍️</span> Beri Ulasan / Testimoni Anda
+                    </h2>
+
+                    <form onsubmit="tambahTestimoni(event)" class="space-y-3 text-xs sm:text-sm">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-1">Nama Anda *</label>
+                                <input type="text" id="testi-nama" required placeholder="Masukkan Nama" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-gray-700 mb-1">Rating Kepuasan *</label>
+                                <select id="testi-rating" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-red-600 font-bold text-amber-600">
+                                    <option value="5">⭐⭐⭐⭐⭐ (Sangat Enak)</option>
+                                    <option value="4">⭐⭐⭐⭐ (Enak & Mantap)</option>
+                                    <option value="3">⭐⭐⭐ (Cukup Bagus)</option>
+                                    <option value="2">⭐⭐ (Perlu Ditingkatkan)</option>
+                                    <option value="1">⭐ (Kurang Puas)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Ulasan / Komentar Anda *</label>
+                            <textarea id="testi-pesan" rows="3" required placeholder="Tulis komentar jujur Anda tentang bakso Pakde Tono..." class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-red-600"></textarea>
+                        </div>
+
+                        <button type="submit" class="bg-amber-500 hover:bg-amber-400 text-stone-900 font-bold px-5 py-2 rounded text-xs shadow">
+                            Kirimgkan Testimoni
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Daftar Komentar Pelanggan -->
+                <div class="bg-white p-6 rounded-xl border border-amber-200 shadow-sm space-y-4">
+                    <h3 class="text-lg font-bold text-stone-800 border-b pb-2 border-amber-200 flex items-center gap-2">
+                        <span>💬</span> Kata Pelanggan Setia
+                    </h3>
+
+                    <div id="daftar-testimoni" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Konten Testimoni Didefinisikan via JS (localStorage) -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: LAPORAN ADMIN (DINAMIS REALTIME SELLER) -->
+        <section id="tab-admin" class="tab-content hidden">
+            <div class="bg-stone-900 text-white p-6 rounded-xl space-y-6 border border-stone-800 shadow-md">
+                <div class="flex justify-between items-center border-b border-stone-700 pb-3">
+                    <div>
+                        <h2 class="text-xl font-bold text-amber-400 flex items-center gap-2">
+                            <span>📊</span> Laporan Penjualan Web (Admin)
+                        </h2>
+                        <p class="text-xs text-stone-400 mt-0.5">Otomatis berubah mengikuti pesanan asli pembeli lewat web</p>
+                    </div>
+                    <button onclick="simulasiAtauResetAdmin()" class="text-xs bg-stone-800 hover:bg-stone-700 text-amber-300 px-3 py-1.5 rounded border border-stone-600">
+                        🔄 Reset Data Penjualan
+                    </button>
+                </div>
+
+                <!-- Card Ringkasan -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div class="bg-stone-800 p-4 rounded-lg border border-stone-700">
+                        <p class="text-gray-400 text-xs">Total Pendapatan Web</p>
+                        <p id="admin-total-omset" class="text-xl font-bold text-green-400 mt-1">Rp 0</p>
+                    </div>
+                    <div class="bg-stone-800 p-4 rounded-lg border border-stone-700">
+                        <p class="text-gray-400 text-xs">Total Item Terjual</p>
+                        <p id="admin-total-porsi" class="text-xl font-bold text-white mt-1">0 Porsi</p>
+                    </div>
+                    <div class="bg-stone-800 p-4 rounded-lg border border-stone-700">
+                        <p class="text-gray-400 text-xs">Menu Terlaris Saat Ini</p>
+                        <p id="admin-menu-terlaris" class="text-xl font-bold text-amber-300 mt-1">-</p>
+                    </div>
+                </div>
+
+                <!-- Tabel Peringkat Menu Terlaris Hari Ini -->
+                <div class="bg-stone-800 rounded-lg p-4 border border-stone-700 space-y-3">
+                    <h3 class="text-sm font-bold text-amber-400">🔥 Rincian Penjualan Menu (Otomatis Diurutkan)</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-stone-900 text-gray-400 border-b border-stone-700">
+                                <tr>
+                                    <th class="p-2">Rank</th>
+                                    <th class="p-2">Nama Menu</th>
+                                    <th class="p-2">Jumlah Terjual</th>
+                                    <th class="p-2">Total Nilai</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-tabel-body" class="divide-y divide-stone-700">
+                                <!-- Isi Dinamis via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="text-xs text-stone-400 bg-stone-800/50 p-3 rounded border border-stone-800">
+                    📌 <strong>Catatan Sistem:</strong> Setiap ada pelanggan yang klik order via WhatsApp/QRIS di web, data penjualan akan otomatis bertambah dan menu paling favorit hari ini akan langsung bergeser naik ke posisi #1 Terlaris.
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 7: KONTAK & MAPS -->
+        <section id="tab-kontak" class="tab-content hidden">
+            <div class="bg-white p-6 sm:p-8 rounded-xl border border-amber-200 shadow-sm space-y-6">
+                <h2 class="text-2xl font-bold text-stone-800 border-b pb-3 border-amber-200 text-center">
+                    📍 Lokasi Warung & Kontak
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                    <!-- Detail Informasi -->
+                    <div class="space-y-3 text-xs sm:text-sm">
+                        <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 space-y-2">
+                            <p class="font-bold text-stone-800 text-base border-b pb-1">Warung Bakso Pakde Tono</p>
+                            <p><strong>📍 Alamat Lengkap:</strong><br>Jl. Jatinegara Timur IV No.17 RT 9, RW.4, Bali Mester, Kec. Jatinegara, Kota Jakarta Timur, DKI Jakarta 13310</p>
+                            <p><strong>📞 WhatsApp Pemesanan:</strong> 083180520329</p>
+                            <p><strong>🕒 Jam Buka:</strong> 12.00 - 21.00 WIB (Buka Setiap Hari)</p>
+                        </div>
+
+                        <div class="flex flex-col gap-2 pt-1">
+                            <a href="https://wa.me/6283180520329" target="_blank" class="w-full text-center bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded-lg text-xs shadow-sm">
+                                <i class="fa-brands fa-whatsapp mr-1 text-sm"></i> Chat WhatsApp (083180520329)
+                            </a>
+                            <a href="https://maps.app.goo.gl/XLxydk5uzLtpYP4HA" target="_blank" class="w-full text-center bg-amber-500 hover:bg-amber-400 text-stone-900 font-bold py-2.5 rounded-lg text-xs shadow-sm">
+                                <i class="fa-solid fa-map-location-dot mr-1 text-sm"></i> Buka Petunjuk Arah (Google Maps)
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Embed Google Maps Jatinegara -->
+                    <div class="h-64 rounded-xl overflow-hidden border border-amber-200 shadow-sm bg-gray-100">
+                        <iframe 
+                            title="Lokasi Bakso Pakde Tono" 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.3059439634887!2d106.868132!3d-6.223326!2m3!1f0!0f0!0f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f38f4bc9b4bd%3A0x8e87489dd312df5f!2sJl.%20Jatinegara%20Timur%20IV%20No.17%2C%20RT.9%2FRW.4%2C%20Bali%20Mester%2C%20Kecaten%20Jatinegara%2C%20Kota%20Jakarta%20Timur!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid" 
+                            class="w-full h-full border-0" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER LENGKAP BERSAMA CREDITS SMKN 65 -->
+    <footer class="bg-stone-800 text-gray-300 py-6 text-center text-xs mt-auto border-t border-stone-700">
+        <div class="max-w-4xl mx-auto px-4 space-y-3">
+            <p>&copy; 2026 Warung Bakso Pakde Tono. Semua Hak Cipta Dilindungi.</p>
+            
+            <!-- Branding Logo SMKN 65 -->
+            <div class="pt-2 border-t border-stone-700/60 flex items-center justify-center gap-2 text-stone-400">
+                <span>Web dibuat oleh</span>
+                <img src="smkn65.jpeg" alt="Logo SMKN 65" class="h-6 w-auto object-contain bg-white/10 p-0.5 rounded" onerror="this.onerror=null; this.src='https://placehold.co/120x40/334155/ffffff?text=SMKN+65';">
+                <span class="font-semibold text-amber-300">SMKN 65 Jakarta</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL KERANJANG PESANAN (PICKUP / TAKEAWAY) -->
+    <div id="modal-keranjang" class="fixed inset-0 bg-black/60 z-50 flex justify-end hidden">
+        <div class="bg-white w-full max-w-md h-full flex flex-col p-4 shadow-xl">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-base text-stone-800 flex items-center gap-2">
+                    <i class="fa-solid fa-basket-shopping text-amber-500"></i>
+                    <span>Pesanan Ambil Sendiri (Pickup)</span>
+                </h3>
+                <button onclick="toggleKeranjang()" class="text-gray-400 hover:text-gray-600 font-bold text-2xl">&times;</button>
+            </div>
+
+            <!-- List Item -->
+            <div id="keranjang-list" class="flex-1 overflow-y-auto py-3 space-y-2">
+                <p class="text-gray-500 text-xs text-center py-8">Keranjang masih kosong.<br>Silakan pilih menu terlebih dahulu.</p>
+            </div>
+
+            <!-- Form Pemesan (Pickup) -->
+            <div class="border-t pt-3 space-y-2 text-xs">
+                <p class="font-bold text-stone-800">Isi Data Ambil Pesanan:</p>
+                <input type="text" id="nama-pemesan" placeholder="Nama Pemesan *" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                <input type="text" id="nomor-hp" placeholder="Nomor WA / HP *" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                
+                <div>
+                    <label class="block font-bold text-gray-600 mb-0.5">Jam Diambil Ke Warung *</label>
+                    <input type="time" id="jam-pickup" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                </div>
+
+                <input type="text" id="catatan" placeholder="Catatan (Misal: Banyakin Sambal / Pedas)" class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-red-600">
+                
+                <div class="flex justify-between items-center font-bold text-sm pt-2 text-stone-900 border-t">
+                    <span>Total Pembayaran:</span>
+                    <span id="total-harga" class="text-red-700 text-base">Rp 0</span>
+                </div>
+            </div>
+
+            <!-- Tombol Aksi Pembayaran -->
+            <div class="grid grid-cols-2 gap-2 pt-3 border-t mt-2">
+                <button onclick="bukaQRIS()" class="bg-stone-800 hover:bg-stone-700 text-white font-bold py-2 rounded text-xs">
+                    <i class="fa-solid fa-qrcode mr-1"></i> Bayar QRIS
+                </button>
+                <button onclick="kirimWA('Bayar Cash saat Diambil')" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 rounded text-xs">
+                    <i class="fa-brands fa-whatsapp mr-1"></i> Pesan (Cash / WA)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL POPUP QRIS -->
+    <div id="modal-qris" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-xl p-5 max-w-sm w-full text-center space-y-3 relative shadow-2xl">
+            <button onclick="tutupQRIS()" class="absolute top-2 right-3 text-gray-400 hover:text-gray-600 text-2xl font-bold">&times;</button>
+            
+            <h3 class="font-bold text-base text-stone-800">Scan QRIS Bakso Pakde Tono</h3>
+            
+            <div class="bg-gray-50 p-3 rounded-lg border inline-block">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=BaksoPakdeTono083180520329" alt="Gambar QRIS" class="w-44 h-44 mx-auto border">
+                <p class="text-xs font-bold mt-2 text-stone-800">NMN: BAKSO PAKDE TONO</p>
+            </div>
+
+            <p class="text-xs text-gray-600">
+                Total Transfer: <br>
+                <strong id="qris-total" class="text-red-700 text-base">Rp 0</strong>
+            </p>
+
+            <button onclick="kirimWA('Sudah Bayar via QRIS')" class="w-full bg-green-600 hover:bg-green-500 text-white py-2.5 rounded-lg text-xs font-bold">
+                <i class="fa-brands fa-whatsapp mr-1"></i> Konfirmasi Bayar QRIS ke WA
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT SISTEM LENGKAP -->
+    <script>
+        // Data Keranjang Belanja
+        let keranjang = [];
+
+        // Data Penjualan Admin (Stored in localStorage)
+        let rekapPenjualan = JSON.parse(localStorage.getItem('bpt_rekap_penjualan')) || {
+            'Bakso Biasa': 0,
+            'Bakso Urat': 0,
+            'Bakso Telur': 0,
+            'Air Putih': 0,
+            'Teh Anget': 0,
+            'Es Teh': 0
+        };
+
+        const hargaMenuMap = {
+            'Bakso Biasa': 15000,
+            'Bakso Urat': 18000,
+            'Bakso Telur': 20000,
+            'Air Putih': 3000,
+            'Teh Anget': 4000,
+            'Es Teh': 5000
+        };
+
+        // Data Testimoni Default & LocalStorage
+        let dataTestimoni = JSON.parse(localStorage.getItem('bpt_testimoni')) || [
+            { nama: 'Mas Supri', rating: 5, pesan: 'Bakso uratnya mantap bener, terasa banget daging sapinya. Kuahnya seger!' },
+            { nama: 'Mbak Rina', rating: 5, pesan: 'Pesan via web terus tinggal ambil di warung pas pulang kerja, praktis gak pake antre!' },
+            { nama: 'Pak Budi', rating: 5, pesan: 'Bakso telurnya kenyang banget, telurnya utuh pas dipotong.' }
+        ];
+
+        // INISIALISASI SAAT TAMPIL
+        window.onload = function() {
+            renderTestimoni();
+            renderAdminReport();
+        };
+
+        // NAVIGATION TAB SPA
+        function bukaTab(namaTab) {
+            const semuaTab = document.querySelectorAll('.tab-content');
+            semuaTab.forEach(tab => tab.classList.add('hidden'));
+
+            const tabAktif = document.getElementById(`tab-${namaTab}`);
+            if (tabAktif) {
+                tabAktif.classList.remove('hidden');
+            }
+
+            const semuaBtn = document.querySelectorAll('.nav-btn');
+            semuaBtn.forEach(btn => btn.classList.remove('active'));
+
+            const btnAktif = document.getElementById(`nav-${namaTab}`);
+            if (btnAktif) {
+                btnAktif.classList.add('active');
+            }
+
+            document.getElementById('mobile-nav').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileNav() {
+            document.getElementById('mobile-nav').classList.toggle('hidden');
+        }
+
+        function toggleKeranjang() {
+            document.getElementById('modal-keranjang').classList.toggle('hidden');
+        }
+
+        // AKSI KERANJANG
+        function tambahItem(nama, harga) {
+            const index = keranjang.findIndex(i => i.nama === nama);
+            if (index > -1) {
+                keranjang[index].qty += 1;
+            } else {
+                keranjang.push({ nama: nama, harga: harga, qty: 1 });
+            }
+            updateUI();
+        }
+
+        function ubahQty(index, delta) {
+            keranjang[index].qty += delta;
+            if (keranjang[index].qty <= 0) {
+                keranjang.splice(index, 1);
+            }
+            updateUI();
+        }
+
+        function updateUI() {
+            const list = document.getElementById('keranjang-list');
+            const totalEl = document.getElementById('total-harga');
+            const qrisTotalEl = document.getElementById('qris-total');
+            const countEl = document.getElementById('cart-count');
+
+            const totalItems = keranjang.reduce((s, i) => s + i.qty, 0);
+            const totalHarga = keranjang.reduce((s, i) => s + (i.harga * i.qty), 0);
+
+            if (totalItems > 0) {
+                countEl.innerText = totalItems;
+                countEl.classList.remove('hidden');
+            } else {
+                countEl.classList.add('hidden');
+            }
+
+            if (keranjang.length === 0) {
+                list.innerHTML = `<p class="text-gray-500 text-xs text-center py-8">Keranjang masih kosong.<br>Silakan pilih menu terlebih dahulu.</p>`;
+            } else {
+                list.innerHTML = keranjang.map((item, idx) => `
+                    <div class="flex justify-between items-center bg-gray-50 p-2.5 rounded border border-gray-200 text-xs">
+                        <div>
+                            <p class="font-bold text-stone-800">${item.nama}</p>
+                            <p class="text-gray-500">Rp ${item.harga.toLocaleString('id-ID')}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="ubahQty(${idx}, -1)" class="w-6 h-6 bg-gray-200 font-bold rounded flex items-center justify-center">-</button>
+                            <span class="font-bold px-1">${item.qty}</span>
+                            <button onclick="ubahQty(${idx}, 1)" class="w-6 h-6 bg-amber-400 font-bold rounded flex items-center justify-center">+</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            totalEl.innerText = `Rp ${totalHarga.toLocaleString('id-ID')}`;
+            qrisTotalEl.innerText = `Rp ${totalHarga.toLocaleString('id-ID')}`;
+        }
+
+        function bukaQRIS() {
+            if (keranjang.length === 0) {
+                alert("Keranjang masih kosong!");
+                return;
+            }
+            document.getElementById('modal-qris').classList.remove('hidden');
+        }
+
+        function tutupQRIS() {
+            document.getElementById('modal-qris').classList.add('hidden');
+        }
+
+        // KIRIM PESANAN (PICKUP) KE WA
+        function kirimWA(metodeBayar = 'Cash di Warung') {
+            if (keranjang.length === 0) {
+                alert("Keranjang masih kosong!");
+                return;
+            }
+
+            const nama = document.getElementById('nama-pemesan').value.trim();
+            const hp = document.getElementById('nomor-hp').value.trim();
+            const jamPickup = document.getElementById('jam-pickup').value;
+            const catatan = document.getElementById('catatan').value.trim();
+
+            if (!nama || !hp || !jamPickup) {
+                alert("Mohon lengkapi Nama Pemesan, No WA, dan Jam Pengambilan (Pickup)!");
+                return;
+            }
+
+            const totalHarga = keranjang.reduce((s, i) => s + (i.harga * i.qty), 0);
+
+            // Simpan Data Penjualan Untuk Laporan Admin
+            keranjang.forEach(item => {
+                if (rekapPenjualan[item.nama] !== undefined) {
+                    rekapPenjualan[item.nama] += item.qty;
+                } else {
+                    rekapPenjualan[item.nama] = item.qty;
+                }
+            });
+            localStorage.setItem('bpt_rekap_penjualan', JSON.stringify(rekapPenjualan));
+            renderAdminReport();
+
+            // Buat Format Teks WA
+            let pesan = `Halo Bakso Pakde Tono, saya mau pesan makanan untuk *AMBIL SENDIRI (PICKUP)*:\n\n`;
+            pesan += `👤 *Nama:* ${nama}\n`;
+            pesan += `📞 *No HP:* ${hp}\n`;
+            pesan += `⏰ *Jam Diambil:* Pukul ${jamPickup} WIB\n`;
+            pesan += `💳 *Pembayaran:* ${metodeBayar}\n`;
+            if (catatan) pesan += `📝 *Catatan:* ${catatan}\n`;
+
+            pesan += `\n🛒 *Rincian Pesanan:*\n`;
+            keranjang.forEach(i => {
+                pesan += `- ${i.nama} x${i.qty} = Rp ${(i.harga * i.qty).toLocaleString('id-ID')}\n`;
+            });
+
+            pesan += `\n💰 *Total Bayar: Rp ${totalHarga.toLocaleString('id-ID')}*`;
+
+            const urlWA = `https://wa.me/6283180520329?text=${encodeURIComponent(pesan)}`;
+            window.open(urlWA, '_blank');
+        }
+
+        // KIRIM BOOKING TEMPAT KE WA
+        function kirimBookingWA(e) {
+            e.preventDefault();
+            const nama = document.getElementById('booking-nama').value.trim();
+            const hp = document.getElementById('booking-hp').value.trim();
+            const tgl = document.getElementById('booking-tanggal').value;
+            const jam = document.getElementById('booking-jam').value;
+            const jumlah = document.getElementById('booking-jumlah').value;
+            const catatan = document.getElementById('booking-catatan').value.trim();
+
+            let pesan = `Halo Pakde Tono, saya ingin *BOOKING TEMPAT* untuk rombongan:\n\n`;
+            pesan += `👤 *Nama:* ${nama}\n`;
+            pesan += `📞 *No WA:* ${hp}\n`;
+            pesan += `📅 *Tanggal:* ${tgl}\n`;
+            pesan += `⏰ *Jam:* Pukul ${jam} WIB\n`;
+            pesan += `👥 *Jumlah Orang:* ${jumlah} Orang\n`;
+            if (catatan) pesan += `📝 *Catatan Tambahan:* ${catatan}\n`;
+
+            const urlWA = `https://wa.me/6283180520329?text=${encodeURIComponent(pesan)}`;
+            window.open(urlWA, '_blank');
+        }
+
+        // FITUR TESTIMONI INTERAKTIF
+        function tambahTestimoni(e) {
+            e.preventDefault();
+            const nama = document.getElementById('testi-nama').value.trim();
+            const rating = parseInt(document.getElementById('testi-rating').value);
+            const pesan = document.getElementById('testi-pesan').value.trim();
+
+            if (!nama || !pesan) return;
+
+            dataTestimoni.unshift({ nama, rating, pesan });
+            localStorage.setItem('bpt_testimoni', JSON.stringify(dataTestimoni));
+            
+            renderTestimoni();
+            e.target.reset();
+            alert("Terima kasih! Testimoni Anda berhasil ditampilkan.");
+        }
+
+        function renderTestimoni() {
+            const container = document.getElementById('daftar-testimoni');
+            if (dataTestimoni.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 text-xs col-span-2 text-center py-4">Belum ada testimoni. Jadilah yang pertama memberikan ulasan!</p>`;
+                return;
+            }
+
+            container.innerHTML = dataTestimoni.map(t => {
+                const bintang = '⭐'.repeat(t.rating);
+                return `
+                    <div class="bg-amber-50 p-4 rounded-lg border border-amber-200 text-xs space-y-1.5">
+                        <div class="flex justify-between items-center border-b border-amber-200 pb-1">
+                            <span class="font-bold text-stone-800">${t.nama}</span>
+                            <span>${bintang}</span>
+                        </div>
+                        <p class="italic text-gray-700">"${t.pesan}"</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // LAPORAN ADMIN REALTIME REKAPITULASI
+        function renderAdminReport() {
+            let listMenu = Object.keys(rekapPenjualan).map(nama => {
+                const qty = rekapPenjualan[nama];
+                const harga = hargaMenuMap[nama] || 0;
+                return { nama, qty, total: qty * harga };
+            });
+
+            // Urutkan berdasarkan terbanyak terjual
+            listMenu.sort((a, b) => b.qty - a.qty);
+
+            const grandTotalOmset = listMenu.reduce((s, i) => s + i.total, 0);
+            const grandTotalPorsi = listMenu.reduce((s, i) => s + i.qty, 0);
+
+            document.getElementById('admin-total-omset').innerText = `Rp ${grandTotalOmset.toLocaleString('id-ID')}`;
+            document.getElementById('admin-total-porsi').innerText = `${grandTotalPorsi} Porsi`;
+
+            // Menu Terlaris #1
+            const terlaris = listMenu[0];
+            if (terlaris && terlaris.qty > 0) {
+                document.getElementById('admin-menu-terlaris').innerText = `${terlaris.nama} (${terlaris.qty}x)`;
+            } else {
+                document.getElementById('admin-menu-terlaris').innerText = "Belum Ada Pesanan";
+            }
+
+            // Render Tabel
+            const tbody = document.getElementById('admin-tabel-body');
+            tbody.innerHTML = listMenu.map((m, idx) => `
+                <tr class="${idx === 0 && m.qty > 0 ? 'bg-amber-950/40 text-amber-300 font-bold' : ''}">
+                    <td class="p-2">#${idx + 1}</td>
+                    <td class="p-2">${m.nama} ${idx === 0 && m.qty > 0 ? '🏆 (Terlaris)' : ''}</td>
+                    <td class="p-2">${m.qty} Porsi</td>
+                    <td class="p-2">Rp ${m.total.toLocaleString('id-ID')}</td>
+                </tr>
+            `).join('');
+        }
+
+        function simulasiAtauResetAdmin() {
+            if (confirm("Apakah Anda ingin mereset data rekapitulasi penjualan admin menjadi 0?")) {
+                rekapPenjualan = {
+                    'Bakso Biasa': 0,
+                    'Bakso Urat': 0,
+                    'Bakso Telur': 0,
+                    'Air Putih': 0,
+                    'Teh Anget': 0,
+                    'Es Teh': 0
+                };
+                localStorage.setItem('bpt_rekap_penjualan', JSON.stringify(rekapPenjualan));
+                renderAdminReport();
+            }
+        }
+    </script>
+</body>
+</html>
